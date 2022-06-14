@@ -1,0 +1,18 @@
+---
+- name: "/bpocore/market/api/v1/resources"
+  register: result
+  uri:
+    url: "https://{{ mcp }}/bpocore/market/api/v1/resources"
+    method: POST
+    body_format: json
+    validate_certs: no
+    headers:
+      Content-Type: "application/json"
+      Authorization: "bearer {{ token }}"
+      body: {{ body }}
+- name: store ID fact
+  set_fact:
+    resource_id: "{{ result.json.id }}"
+- name: store resource result
+  set_fact:
+    resource: "{{ result.json }}"

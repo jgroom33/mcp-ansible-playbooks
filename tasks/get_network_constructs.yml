@@ -1,0 +1,24 @@
+---
+- name: Get Network Constructs
+  uri:
+    url: "https://{{ mcp }}/nsi/api/networkConstructs?limit=1000"
+    method: GET
+    status_code: 200
+    validate_certs: no
+    headers:
+      Authorization: "bearer {{ token }}"
+  register: result
+- name: Set Network Constructs
+  set_fact:
+    network_constructs: '{{ result.json["data"] }}'
+- name: Set tmp vars 
+  set_fact:
+    tmp_by_name: "{{tmp_by_name | default([]) + [{'name': item.attributes['name'] | default(''), 'id':item.id}] }}"
+    tmp_by_ipAddress: "{{tmp_by_ipAddress | default([]) + [{'ipAddress': item.attributes['ipAddress'] | default(''), 'id':item.id}] }}"
+  with_items: "{{ network_constructs }}"
+  loop_control:
+    label: "Setting {{ item.id }}"  
+- name: Set network_constructs_by_name and network_constructs_by_ipAddress
+  set_fact:
+    network_constructs_by_name: "{{ tmp_by_name | items2dict(key_name='name', value_name='id')}}"
+    network_constructs_by_ipAddress: "{{ tmp_by_ipAddress | items2dict(key_name='ipAddress', value_name='id')}}"

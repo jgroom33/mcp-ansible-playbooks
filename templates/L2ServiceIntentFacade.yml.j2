@@ -1,0 +1,51 @@
+body:
+  productId: "{{ products_by_resourceType['ifd.v6.resourceTypes.L2ServiceIntentFacade'] }}"
+  properties:
+    serviceType: EVPL
+    allowQinQSpur: true
+    name: "{{ service_name }}"
+    protectedPseudowire: false
+    transportProtection: PROTECTED_BEST_EFFORT
+    interactive_mode: "false"
+    linearOnly: true
+    routeMeta:
+      originator: BP2
+    oamEnabled: false
+    endpoints:
+      - settings:
+          node: "{{ spoke1_Node_A }}"
+          role: A_UNI
+          details:
+            - flowSettings:
+                - filter:
+                    outerVlanId:
+                      - 1500
+                  ingressCosSetting:
+                    ingressCosPolicy: fixed
+                    ingressCosPbit: {{ pbit }}
+                  controlFrameTunneling: disabled
+                  location:
+                    port: "{{ spoke1_Uni_A }}"
+                  profiles:
+                    - profileName: eth_flow::500M-Std
+                      profileType: ifd.v6.resourceTypes.ServiceFacadeProfile
+          dmmMode: MEF35.1
+          slmMode: MEF35.1
+      - settings:
+          node: "{{ spoke1_Node_Z }}"
+          role: Z_ENNI
+          details:
+            - flowSettings:
+                - filter:
+                    outerVLANEthertype: "8100"
+                    outerVlanId:
+                      - 3201
+                  ingressCosSetting:
+                    ingressCosMapName: Trusted-FTC-Map
+                    ingressCosPolicy: L2PcpCos
+                  controlFrameTunneling: disabled
+                  location:
+                    lagName: "{{ spoke1_Enni_Z }}"
+          dmmMode: MEF35.1
+    type: FDFR
+    structure: P2P
