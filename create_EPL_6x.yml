@@ -9,6 +9,7 @@
     A_UNI_PORT: 1
     Z_UNI_NODE: CE-2
     Z_UNI_PORT: 1
+    SVID: 1000
   tasks:
     - name: ------------------- BOOTSTRAP -------------------
       ansible.builtin.import_tasks: tasks/bootstrap.yml

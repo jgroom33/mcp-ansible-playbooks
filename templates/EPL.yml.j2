@@ -2,7 +2,7 @@
 productId: {{ products_by_resourceType['ifd.v6.resourceTypes.L2ServiceIntentFacade'] | string }}
 properties:
   name: {{ service_name | string }}
-  coreSvid: 1000
+  coreSvid: {{ SVID }}
   profiles:
   - profileType: ifd.v6.resourceTypes.ServiceFacadeProfile
     profileName: eth::fixed_1

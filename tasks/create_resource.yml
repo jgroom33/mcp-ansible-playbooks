@@ -14,9 +14,6 @@
 - name: store ID fact
   set_fact:
     resource_id: "{{ result.json.id }}"
-- name: store resource result
-  set_fact:
-    resource: "{{ result.json }}"
 - name: Awaiting {{ resource_id }} active
   register: result
   uri:
@@ -29,3 +26,6 @@
   until: result.json.orchState == "active"
   retries: 30
   delay: 2
+- name: store resource result
+  set_fact:
+    resource: "{{ result.json }}"

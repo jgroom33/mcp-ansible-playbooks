@@ -45,7 +45,6 @@ All playbooks rely on the base playbook, `bootstrap.yml`, which is included in t
 * capture the MCP IP Address
 * Set the token variable for subsequent playbooks
 * Set the Products variable for subsequent playbooks
-* Set the Network Constructs variable for subsequent playbooks
 
 Example variable utput:
 
@@ -65,7 +64,7 @@ This variable can then be used in any playbook as follows:
 
 ```yml
     - name: create L2 Facade
-      ansible.builtin.import_tasks: tasks/resource.yml
+      ansible.builtin.import_tasks: tasks/create_resource.yml
       vars:
         body:
           productId: "{{ products_by_resourceType['ifd.v6.resourceTypes.L2ServiceIntentFacade'] }}"
@@ -74,7 +73,7 @@ This variable can then be used in any playbook as follows:
           .........
 ```
 
-Notice the helper task `tasks/resource.yml`
+Notice the helper task `tasks/create_resource.yml`
 
 ### Getting started
 
