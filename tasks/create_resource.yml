@@ -4,12 +4,13 @@
   uri:
     url: "https://{{ mcp }}/bpocore/market/api/v1/resources"
     method: POST
+    status_code: 201
     body_format: json
     validate_certs: no
     headers:
       Content-Type: "application/json"
       Authorization: "bearer {{ token }}"
-      body: {{ body }}
+    body: "{{ body | from_yaml | to_json }}"
 - name: store ID fact
   set_fact:
     resource_id: "{{ result.json.id }}"

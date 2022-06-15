@@ -1,0 +1,46 @@
+---
+productId: {{ products_by_resourceType['ifd.v6.resourceTypes.L2ServiceIntentFacade'] | string }}
+properties:
+  name: {{ service_name | string }}
+  coreSvid: 1000
+  profiles:
+  - profileType: ifd.v6.resourceTypes.ServiceFacadeProfile
+    profileName: eth::fixed_1
+  type: FDFR
+  structure: P2P
+  routeMeta:
+    originator: BP2
+  serviceType: EPL
+  protectedPseudowire: false
+  oamEnabled: false
+  linearOnly: true
+  allowQinQSpur: false
+  transportProtection: PROTECTED_BEST_EFFORT
+  interactive_mode: 'false'
+  constraints:
+    transport: {}
+  endpoints:
+    - settings:
+        role: A_UNI
+        details:
+        - flowSettings:
+          - filter: {}
+            profiles:
+            - profileType: ifd.v6.resourceTypes.ServiceFacadeProfile
+              profileName: eth_flow::fixed_1
+            controlFrameTunneling: disabled
+            location:
+              port: "{{ A_UNI_PORT }}"
+        node: {{ A_UNI_NODE | string }}
+    - settings:
+        role: Z_UNI
+        details:
+        - flowSettings:
+          - filter: {}
+            profiles:
+            - profileType: ifd.v6.resourceTypes.ServiceFacadeProfile
+              profileName: eth_flow::fixed_1
+            controlFrameTunneling: disabled
+            location:
+              port: "{{ Z_UNI_PORT }}"
+        node: {{ Z_UNI_NODE | string }}
