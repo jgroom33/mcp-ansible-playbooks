@@ -1,5 +1,5 @@
 ---
-- name: "/bpocore/market/api/v1/resources"
+- name: Creating Resource
   register: result
   uri:
     url: "https://{{ mcp }}/bpocore/market/api/v1/resources"
@@ -17,3 +17,15 @@
 - name: store resource result
   set_fact:
     resource: "{{ result.json }}"
+- name: Awaiting {{ resource_id }} active
+  register: result
+  uri:
+    url: "https://{{ mcp }}/bpocore/market/api/v1/resources/{{ resource_id }}"
+    method: GET
+    validate_certs: no
+    headers:
+      Content-Type: "application/json"
+      Authorization: "bearer {{ token }}"
+  until: result.json.orchState == "active"
+  retries: 30
+  delay: 2

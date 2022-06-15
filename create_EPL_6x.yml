@@ -10,9 +10,9 @@
     Z_UNI_NODE: CE-2
     Z_UNI_PORT: 1
   tasks:
-    - name: bootstrap
+    - name: ------------------- BOOTSTRAP -------------------
       ansible.builtin.import_tasks: tasks/bootstrap.yml
-    - name: create L2 Facade
+    - name: ------------------- CREATE L2 Facade -------------------
       ansible.builtin.import_tasks: tasks/create_resource.yml
       # returns resource fact
       vars:
