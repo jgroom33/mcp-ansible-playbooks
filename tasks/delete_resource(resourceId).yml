@@ -1,0 +1,24 @@
+---
+- name: Deleting Resource
+  register: result
+  uri:
+    url: "https://{{ mcp }}/bpocore/market/api/v1/resources/{{ resourceId }}"
+    method: DELETE
+    status_code: 204
+    validate_certs: no
+    headers:
+      Content-Type: "application/json"
+      Authorization: "bearer {{ token }}"
+- name: Awaiting {{ resourceId }} terminated
+  register: result
+  uri:
+    url: "https://{{ mcp }}/bpocore/market/api/v1/resources/{{ resourceId }}"
+    method: GET
+    validate_certs: no
+    status_code: [404,200]
+    headers:
+      Content-Type: "application/json"
+      Authorization: "bearer {{ token }}"
+  until: result.status == 404
+  retries: 30
+  delay: 2
