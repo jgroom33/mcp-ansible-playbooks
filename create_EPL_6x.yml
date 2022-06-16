@@ -18,3 +18,18 @@
       vars:
         body: '{{ lookup("template", "templates/EPL.yml.j2") }}'
         store_name: "{{ service_name }}"
+    - name: ------------------- GET Service Facade Intent Relationship -------------------
+      ansible.builtin.include_tasks: tasks/get_relationship_0_targetId(sourceId).yml
+      vars:
+        sourceId: "{{ resource.id }}"
+    - name: ------------------- Await Service Intent active -------------------
+      ansible.builtin.include_tasks: tasks/await_resource_orchstate(resourceId,orchState).yml
+      vars:
+        resourceId: "{{ targetId }}"
+        orchState: active
+    - name: ------------------- GET Service Intent Resource -------------------
+      ansible.builtin.include_tasks: tasks/await_resource_deploymentState(resourceId,state).yml
+      vars:
+        resourceId: "{{ targetId }}"
+        state: COMPLETE_FULLY_READY
+        store_name: Intent

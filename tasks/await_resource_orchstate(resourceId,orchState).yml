@@ -1,4 +1,4 @@
-- name: Waiting for resource deploymentState to equal {{ state }}
+- name: Awaiting {{ resourceId }} active
   register: result
   uri:
     url: "https://{{ mcp }}/bpocore/market/api/v1/resources/{{ resourceId }}"
@@ -7,21 +7,20 @@
     headers:
       Content-Type: "application/json"
       Authorization: "bearer {{ token }}"
-  until: result.json.properties.deploymentState == state
+  until: result.json.orchState == orchState
   retries: 30
   delay: 2
+
 - name: store resource result
   set_fact:
     resource: "{{ result.json }}"
     cacheable: yes
-- name: Print resource
-  ansible.builtin.debug:
-    var: resource
+
 - name: Store
   ansible.builtin.set_fact:
     store: "{{ store | default({}) | combine({store_name: resource}) }}"
     cacheable: yes
-  when: store_name is defined and store_name
+  when: store_name
 - name: store resource result
   set_fact:
     store_name: null

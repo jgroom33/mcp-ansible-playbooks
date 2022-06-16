@@ -11,10 +11,15 @@
       Content-Type: "application/json"
       Authorization: "bearer {{ token }}"
     body: "{{ body | from_yaml | to_json }}"
-- name: Awaiting {{ resource_id }} active
+- name: store resource result
+  set_fact:
+    resource: "{{ result.json }}"
+    cacheable: yes
+
+- name: Awaiting {{ resource.id }} active
   register: result
   uri:
-    url: "https://{{ mcp }}/bpocore/market/api/v1/resources/{{ resource_id }}"
+    url: "https://{{ mcp }}/bpocore/market/api/v1/resources/{{ resource.id }}"
     method: GET
     validate_certs: no
     headers:
@@ -23,6 +28,7 @@
   until: result.json.orchState == "active"
   retries: 30
   delay: 2
+
 - name: store resource result
   set_fact:
     resource: "{{ result.json }}"
