@@ -10,7 +10,6 @@
   register: result
 - set_fact:
     products: '{{ result.json["items"] }}'
-    cacheable: yes
 - ansible.builtin.set_fact:
     products_by_resourceType: "{{ products | items2dict(key_name='resourceTypeId', value_name='id') }}"
     cacheable: yes

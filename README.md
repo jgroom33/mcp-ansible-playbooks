@@ -5,43 +5,12 @@
 ```bash
 pipenv shell
 pipenv install
+export ANSIBLE_CONFIG=./ansible.cfg
 ```
-
-## Example execution
-
-```mermaid
-sequenceDiagram
-    Note over App,/tron/api/v1/tokens: ///// Get Token ////// POST
-    App->>+/tron/api/v1/tokens: username:admin password:adminpw
-    /tron/api/v1/tokens-->>-App: token
-    Note over App,market: ///// Create Facade ////// POST --> /bpocore/market/api/v1/resources
-    App->>+market: productId: {{ FacadeProduct }} and  {{ other data }}
-    market-->>-App: facade id
-    Note over App,market: ///// Get Facade ////// GET --> /bpocore/market/api/v1/resources/{{ facade id }}
-    loop Repeat until orchState=active
-        App->>+market: 
-        market-->>-App: orchState
-    end
-    Note over App,market: ///// Get Facade Relationship ////// GET --> /bpocore/market/api/v1/relationships?q=sourceId:{{ facade id }}
-    App->>market: 
-    market->>App: items[0].targetId
-    Note over App,market: ///// Calculate Routes ////// POST --> /bpocore/market/api/v1/resources/{{ targetId }}/operations
-    App->>market: interface: requestRoutes
-    market->>App: operation id
-    Note over App,market: ///// Get Routes ////// GET --> /bpocore/market/api/v1/resources/{{ targetId }}/operations/{{ operation id }}
-    loop Repeat until state=successful
-        App->>+market: 
-        market-->>-App: state, outputs.routes[]
-    end
-    Note over App,market: ///// Create FRE ////// POST --> /bpocore/market/api/v1/resources/{{ targetId }}/operations
-    App->>market: interface: commitRoute, inputs.routes: [ {{ routes from calculation }} ]
-    market->>App: fre id
-```
-
 
 ## Playbooks
 
-All playbooks rely on the base playbook, `bootstrap.yml`, which is included in the `tasks` directory. The bootstrap playbook is responsible for:
+All playbooks rely on the base playbook, `bootstrap.yml`. The bootstrap playbook is responsible for:
 * capture the MCP IP Address
 * Set the token variable for subsequent playbooks
 * Set the Products variable for subsequent playbooks
@@ -73,15 +42,39 @@ This variable can then be used in any playbook as follows:
           .........
 ```
 
-Notice the helper task `tasks/create_resource.yml`
-
 ### Getting started
 
-There are example playbooks for executing API calls against MCP:
+Reusable tasks are in the tasks directory.
 
-* print_products.yml
-  * Print the list of products in MCP
-* print_token.yml
-  * Print the token used to authenticate against MCP
+The ansible config uses jsonfile caching. This is handled automatically by relevant tasks. Explore [saved facts](tmp/localhost) after running a playbook.
+
+To save a custom variable during execution to the cache file, set the `store_name` variable:
+
+```yml
+  vars:
+    service_name: foo
+  tasks:
+    - name: ------------------- CREATE L2 Facade -------------------
+      ansible.builtin.include_tasks: tasks/create_resource.yml
+      vars:
+        body: '{{ lookup("template", "templates/EPL.yml.j2") }}'
+        store_name: "{{ service_name }}"
+```
+
+This will save the result of that call to the cache as:
+
+```json
+{
+  "store": {
+    "foo": {
+      "autoClean": false,
+      "createdAt": "2022-06-16T17:28:50.722Z",
+      "desiredOrchState": "active",
+      ......
+```
+
+#### print_vars.yml
+
+Print the vars of products in MCP
 
 `ansible-playbook print_vars.yml --extra-vars "@vars.yml"`
