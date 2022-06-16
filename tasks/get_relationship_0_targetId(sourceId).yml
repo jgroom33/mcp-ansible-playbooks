@@ -10,14 +10,14 @@
 - name: Set response fact
   set_fact:
     relationships: "{{ result.json['items'] }}"
-    cacheable: yes
 - name: Print relationships
   debug:
     var: relationships
+    verbosity: 1
 - name: Set response fact
   set_fact:
     targetId: "{{ relationships[0].targetId }}"
-    cacheable: yes
 - name: Print targetId
   debug:
     var: targetId
+    verbosity: 1

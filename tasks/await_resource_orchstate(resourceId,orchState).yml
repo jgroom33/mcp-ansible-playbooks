@@ -14,8 +14,6 @@
 - name: store resource result
   set_fact:
     resource: "{{ result.json }}"
-    cacheable: yes
-
 - name: Store
   ansible.builtin.set_fact:
     store: "{{ store | default({}) | combine({store_name: resource}) }}"

@@ -11,7 +11,6 @@
 - name: Set Network Constructs
   set_fact:
     network_constructs: '{{ result.json["data"] }}'
-    cacheable: yes
 - name: Set tmp vars 
   set_fact:
     tmp_by_name: "{{tmp_by_name | default([]) + [{'name': item.attributes['name'] | default(''), 'id':item.id}] }}"

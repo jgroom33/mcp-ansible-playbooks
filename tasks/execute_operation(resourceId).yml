@@ -14,7 +14,7 @@
 - name: store operation fact
   set_fact:
     operation: "{{ result.json }}"
-    cacheable: yes
 - name: Print operation
   ansible.builtin.debug:
     var: operation
+    verbosity: 1

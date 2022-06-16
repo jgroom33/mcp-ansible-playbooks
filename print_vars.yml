@@ -9,9 +9,3 @@
     - name: Print products_by_resourceType
       ansible.builtin.debug:
         var: products_by_resourceType
-    # - name: Print network_constructs_by_name
-    #   ansible.builtin.debug:
-    #     var: network_constructs_by_name
-    # - name: Print network_constructs_by_ipAddress
-    #   ansible.builtin.debug:
-    #     var: network_constructs_by_ipAddress

@@ -1,4 +1,4 @@
-- name: Waiting for resource operation to complete
+- name: Getting resource {{ resourceId }}
   register: result
   uri:
     url: "https://{{ mcp }}/bpocore/market/api/v1/resources/{{ resourceId }}"
@@ -10,10 +10,10 @@
 - name: store resource result
   set_fact:
     resource: "{{ result.json }}"
-    cacheable: yes
 - name: Print resource
   ansible.builtin.debug:
     var: resource
+    verbosity: 1
 - name: Store
   ansible.builtin.set_fact:
     store: "{{ store | default({}) | combine({store_name: resource}) }}"

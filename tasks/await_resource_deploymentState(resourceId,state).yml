@@ -13,10 +13,10 @@
 - name: store resource result
   set_fact:
     resource: "{{ result.json }}"
-    cacheable: yes
 - name: Print resource
   ansible.builtin.debug:
     var: resource
+    verbosity: 1
 - name: Store
   ansible.builtin.set_fact:
     store: "{{ store | default({}) | combine({store_name: resource}) }}"

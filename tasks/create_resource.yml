@@ -14,7 +14,6 @@
 - name: store resource result
   set_fact:
     resource: "{{ result.json }}"
-    cacheable: yes
 
 - name: Awaiting {{ resource.id }} active
   register: result
@@ -32,7 +31,6 @@
 - name: store resource result
   set_fact:
     resource: "{{ result.json }}"
-    cacheable: yes
 
 - name: Store
   ansible.builtin.set_fact:
