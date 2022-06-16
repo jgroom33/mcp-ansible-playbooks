@@ -27,7 +27,7 @@
       vars:
         resourceId: "{{ targetId }}"
         orchState: active
-    - name: ------------------- GET Service Intent Resource -------------------
+    - name: ------------------- Await Service Intent COMPLETE_FULLY_READY -------------------
       ansible.builtin.include_tasks: tasks/await_resource_deploymentState(resourceId,state).yml
       vars:
         resourceId: "{{ targetId }}"
