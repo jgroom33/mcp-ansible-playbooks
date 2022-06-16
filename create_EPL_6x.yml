@@ -4,7 +4,7 @@
   connection: local
   gather_facts: false
   vars:
-    service_name: Service TEST1
+    service_name: Service-TEST1
     A_UNI_NODE: CE-1
     A_UNI_PORT: 1
     Z_UNI_NODE: CE-2
@@ -18,8 +18,6 @@
       # returns resource fact
       vars:
         body: '{{ lookup("template", "templates/EPL.yml.j2") }}'
-    - name: Store Created resource ID
+    - name: set FRE resource
       ansible.builtin.set_fact:
-        L2_FACADE: "{{ resource }}"
-    - ansible.builtin.debug:
-        var: L2_FACADE
+        L2Facade: "{{ resource }}"

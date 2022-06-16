@@ -1,0 +1,19 @@
+---
+- name: Creating Resource
+  register: result
+  uri:
+    url: "https://{{ mcp }}/bpocore/market/api/v1/resources/{{ resourceId }}/operations"
+    method: POST
+    status_code: 201
+    body_format: json
+    validate_certs: no
+    headers:
+      Content-Type: "application/json"
+      Authorization: "bearer {{ token }}"
+    body: "{{ body | from_yaml | to_json }}"
+- name: store operation fact
+  set_fact:
+    operation: "{{ result.json }}"
+- name: Print operation
+  ansible.builtin.debug:
+    var: operation
