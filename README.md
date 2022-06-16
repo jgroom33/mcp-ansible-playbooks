@@ -10,12 +10,12 @@ export ANSIBLE_CONFIG=./ansible.cfg
 
 ## Playbooks
 
-All playbooks rely on the base playbook, `bootstrap.yml`. The bootstrap playbook is responsible for:
+All playbooks should use the role `bootstrap`. The role is responsible for:
 * capture the MCP IP Address
-* Set the token variable for subsequent playbooks
+* Store the token variable in [cache](tmp/localhost) for subsequent playbooks
 * Set the Products variable for subsequent playbooks
 
-Example variable utput:
+Example variable output:
 
 ```json
 {
@@ -46,7 +46,7 @@ This variable can then be used in any playbook as follows:
 
 Reusable tasks are in the tasks directory.
 
-The ansible config uses jsonfile caching. This is handled automatically by relevant tasks. Explore [saved facts](tmp/localhost) after running a playbook.
+The ansible config uses jsonfile caching. This is handled automatically by relevant tasks. Explore [cache](tmp/localhost) after running a playbook.
 
 To save a custom variable during execution to the cache file, set the `store_name` variable:
 
@@ -77,4 +77,4 @@ This will save the result of that call to the cache as:
 
 Print the vars of products in MCP
 
-`ansible-playbook print_vars.yml --extra-vars "@vars.yml"`
+`ansible-playbook print_vars.yml`

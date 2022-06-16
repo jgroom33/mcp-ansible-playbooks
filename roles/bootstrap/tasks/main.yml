@@ -1,0 +1,22 @@
+---
+- name: capture MCP IP
+  when: mcp is not defined
+  block:
+    - pause:
+        prompt: "What is the IP address of MCP?"
+        echo: true
+      register: input
+      run_once: true
+    - name: set MCP IP
+      set_fact:
+        mcp: "{{ input.user_input }}"
+        cacheable: yes
+
+- name: Get token
+  include_tasks: get_token.yml
+- name: Test token
+  ansible.builtin.include_tasks: test_token.yml
+- name: Get products
+  include_tasks: get_products.yml
+# - name: Get Network Constructs
+#   import_tasks: get_network_constructs.yml

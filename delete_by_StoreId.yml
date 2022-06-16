@@ -3,10 +3,10 @@
   name: Get Service
   connection: local
   gather_facts: false
+  roles:
+    - bootstrap
   vars:
     resourceId: "{{ store['Service-TEST1'].id }}"
   tasks:
-    - name: ------------------- BOOTSTRAP -------------------
-      ansible.builtin.include_tasks: tasks/bootstrap.yml
     - name: ------------------- DELETE Service Intent Facade Resource -------------------
       ansible.builtin.include_tasks: tasks/delete_resource(resourceId).yml

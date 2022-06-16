@@ -3,6 +3,8 @@
   name: Create Access EVPL UNI 6x
   connection: local
   gather_facts: false
+  roles:
+    - bootstrap
   vars:
     service_name: Service-TEST1
     A_UNI_NODE: CE-1
@@ -11,8 +13,6 @@
     Z_UNI_PORT: 1
     SVID: 1000
   tasks:
-    - name: ------------------- BOOTSTRAP -------------------
-      ansible.builtin.include_tasks: tasks/bootstrap.yml
     - name: ------------------- CREATE L2 Facade -------------------
       ansible.builtin.include_tasks: tasks/create_resource.yml
       vars:

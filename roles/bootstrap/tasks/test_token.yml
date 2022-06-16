@@ -1,0 +1,19 @@
+---
+- name: Test Token
+  block:
+  - name: Test Token
+    uri:
+      url: "https://{{ mcp }}/bpocore/market/api/v1/products"
+      method: GET
+      status_code: 200
+      validate_certs: no
+      headers:
+        Authorization: "bearer {{ token }}"
+
+  rescue:
+    - name: Get new token
+      ansible.builtin.set_fact:
+        token: null
+        cacheable: yes
+    - name: Get new token
+      include_tasks: get_token.yml

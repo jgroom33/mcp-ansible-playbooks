@@ -3,11 +3,11 @@
   name: Get Service
   connection: local
   gather_facts: false
+  roles:
+    - bootstrap
   vars:
     resourceId: da9543f0-ed98-11ec-b52d-d3fadccc22d3  # This is the service Intent Facade id
   tasks:
-    - name: ------------------- BOOTSTRAP -------------------
-      ansible.builtin.include_tasks: tasks/bootstrap.yml
     - name: ------------------- GET Service Intent Facade Resource -------------------
       ansible.builtin.include_tasks: tasks/get_resource(resourceId).yml
       vars:
