@@ -1,0 +1,15 @@
+- name: Waiting for resource operation to complete
+  register: result
+  uri:
+    url: "https://{{ mcp }}/bpocore/market/api/v1/resources/{{ resourceId }}"
+    method: GET
+    validate_certs: no
+    headers:
+      Content-Type: "application/json"
+      Authorization: "bearer {{ token }}"
+- name: store resource result
+  set_fact:
+    resource: "{{ result.json }}"
+- name: Print resource
+  ansible.builtin.debug:
+    var: resource
