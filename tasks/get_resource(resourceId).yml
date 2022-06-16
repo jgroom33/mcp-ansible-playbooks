@@ -10,6 +10,7 @@
 - name: store resource result
   set_fact:
     resource: "{{ result.json }}"
+    cacheable: yes
 - name: Print resource
   ansible.builtin.debug:
     var: resource

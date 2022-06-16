@@ -11,9 +11,6 @@
       Content-Type: "application/json"
       Authorization: "bearer {{ token }}"
     body: "{{ body | from_yaml | to_json }}"
-- name: store ID fact
-  set_fact:
-    resource_id: "{{ result.json.id }}"
 - name: Awaiting {{ resource_id }} active
   register: result
   uri:
@@ -29,3 +26,4 @@
 - name: store resource result
   set_fact:
     resource: "{{ result.json }}"
+    cacheable: yes
