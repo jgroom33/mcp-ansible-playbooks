@@ -7,15 +7,18 @@
     resourceId: 2a885b70-ed87-11ec-b52d-d3fadccc22d3
   tasks:
     - name: ------------------- BOOTSTRAP -------------------
-      ansible.builtin.import_tasks: tasks/bootstrap.yml
+      ansible.builtin.include_tasks: tasks/bootstrap.yml
     - name: ------------------- GET Service Intent Facade Resource -------------------
-      ansible.builtin.import_tasks: tasks/get_resource(resourceId).yml
+      ansible.builtin.include_tasks: tasks/get_resource(resourceId).yml
+      vars:
+        store_name: Facade
     - name: ------------------- GET Service Facade Intent Relationship -------------------
-      ansible.builtin.import_tasks: tasks/get_relationship_0_targetId(sourceId).yml
+      ansible.builtin.include_tasks: tasks/get_relationship_0_targetId(sourceId).yml
       vars:
         sourceId: "{{ resourceId }}"
     - name: ------------------- GET Service Intent Resource -------------------
-      ansible.builtin.import_tasks: tasks/await_resource_deploymentState(resourceId,state).yml
+      ansible.builtin.include_tasks: tasks/await_resource_deploymentState(resourceId,state).yml
       vars:
         resourceId: "{{ targetId }}"
         state: COMPLETE_FULLY_READY
+        store_name: Intent

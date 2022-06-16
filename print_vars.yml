@@ -1,11 +1,11 @@
 ---
 - hosts: localhost
-  name: Enroll Devices in MCP
+  name: Print Vars
   connection: local
   gather_facts: false
   tasks:
     - name: bootstrap
-      ansible.builtin.import_tasks: tasks/bootstrap.yml
+      ansible.builtin.include_tasks: tasks/bootstrap.yml
     - name: Print products_by_resourceType
       ansible.builtin.debug:
         var: products_by_resourceType

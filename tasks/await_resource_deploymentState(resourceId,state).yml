@@ -17,3 +17,11 @@
 - name: Print resource
   ansible.builtin.debug:
     var: resource
+- name: Store
+  ansible.builtin.set_fact:
+    store: "{{ store | default({}) | combine({store_name: resource}) }}"
+    cacheable: yes
+  when: store_name is defined and store_name
+- name: store resource result
+  set_fact:
+    store_name: null

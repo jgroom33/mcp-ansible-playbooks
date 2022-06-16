@@ -12,12 +12,9 @@
     SVID: 1000
   tasks:
     - name: ------------------- BOOTSTRAP -------------------
-      ansible.builtin.import_tasks: tasks/bootstrap.yml
+      ansible.builtin.include_tasks: tasks/bootstrap.yml
     - name: ------------------- CREATE L2 Facade -------------------
-      ansible.builtin.import_tasks: tasks/create_resource.yml
-      # returns resource fact
+      ansible.builtin.include_tasks: tasks/create_resource.yml
       vars:
         body: '{{ lookup("template", "templates/EPL.yml.j2") }}'
-    - name: set FRE resource
-      ansible.builtin.set_fact:
-        L2Facade: "{{ resource }}"
+        store_name: "{{ service_name }}"
